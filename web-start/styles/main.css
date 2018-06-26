@@ -197,3 +197,64 @@ main, #messages-card {
   top: -1px;
   margin-right: 5px;
 }
+
+.br::before {
+  content: "\A" ;
+  white-space: pre ;
+}
+
+.disp-inBlock{
+  display:inline-block;
+}
+
+.qa-section {
+  width: 350px;
+  height: 150px;
+  background: #aaa;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.qa-card {
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 7px #ccc;
+}
+
+.qa-card-space {
+  width: 10px;
+}
+.qa-card-img {
+  border-radius: 5px 5px 0 0;
+  max-width: 100%;
+  height: auto;
+}
+.qa-card-content {
+  padding: 20px;
+}
+.qa-card-title {
+  font-size: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+.qa-card-text {
+  color: #777;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.qa-card-link {
+  text-align: center;
+  border-top: 1px solid #eee;
+  padding: 20px;
+}
+.qa-card-link a {
+  text-decoration: none;
+  color: #0bd;
+  margin: 0 10px;
+}
+.qa-card-link a:hover {
+  color: #0090aa;
+}
