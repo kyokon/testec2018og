@@ -207,15 +207,43 @@ main, #messages-card {
   display:inline-block;
 }
 
+.body-frame {
+  display: flex;
+}
+
+.qa-frame {
+  width: 50%;
+
+}
+
+.message-frame {
+
+  width: 50%;
+}
+
+
 .qa-section {
   width: 350px;
   height: 150px;
   background: #aaa;
   display: flex;
   flex-flow: row wrap;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.qa-card-row {
+  display: flex;
+  width: 100%;
+}
+.qa-card-col {
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
 }
 
 .qa-card {
+  display: block;
   width: 100px;
   height: 100px;
   background: #fff;
