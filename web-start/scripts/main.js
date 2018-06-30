@@ -324,3 +324,72 @@ FriendlyChat.prototype.checkSetup = function() {
 window.addEventListener('load' , function() {
   window.friendlyChat = new FriendlyChat();
 });
+
+function CardForSession(){
+    this.checkSetup();
+    this.initFirebase();
+}
+
+// Sets up shortcuts to Firebase features and initiate firebase auth.
+CardForSession.prototype.initFirebase = function() {
+    // Shortcuts to Firebase SDK features.
+    this.auth = firebase.auth();
+    this.database = firebase.database();
+    this.storage = firebase.storage();
+
+    this.CardReadings();
+};
+
+
+// Triggers when the auth state change for instance when the user signs-in or signs-out.
+CardForSession.prototype.CardReadings = function() {
+        // We load currently existing chat messages.
+        this.LoadCard();
+};
+
+CardForSession.prototype.LoadCard = function(){
+    // Reference to the /messages/ database path.
+    this.oralSessionlist = this.database.ref('oralPresentationData');
+    // Make sure we remove all previous listeners.
+    this.oralSessionlist.off();
+
+    var setMessage = function(snap) {
+        var data = snap.val();
+        this.displayMessage(data.number, data.body, data.title, data.whois);
+    }.bind(this);
+};
+
+
+// Template for messages.
+CardForSession.MESSAGE_TEMPLATE =
+    '<div class="qa-card">' +
+    '<div class="spacing"><div class="pic"></div></div>' +
+    '<div class="message"></div>' +
+    '<div class="name"></div>' +
+    '</div>';
+
+// Displays a Message in the UI.
+CardForSession.prototype.displayMessage = function(number, body, title, whois) {
+    var div = document.getElementById(key);
+    // If an element for that message does not exists yet we create it.
+    if (!number) {
+        var container = document.createElement('div');
+        container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
+        number = container.firstChild;
+        div.setAttribute('number', key);
+        this.messageList.appendChild(div);
+    }
+
+    div.querySelector('.body').textContent = name;
+    var messageElement = div.querySelector('.body');
+    if (body) { // If the message is text.
+        messageElement.textContent = message;
+        // Replace all line breaks by <br>.
+        messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+    }
+
+    // Show the card fading-in.
+    setTimeout(function() {div.classList.add('visible')}, 1);
+    this.messageList.scrollTop = this.messageList.scrollHeight;
+    this.messageInput.focus();
+};
