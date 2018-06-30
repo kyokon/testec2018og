@@ -15,9 +15,11 @@
  */
 'use strict';
 
+
 // Initializes FriendlyChat.
 function FriendlyChat() {
   this.checkSetup();
+
 
   // Shortcuts to DOM Elements.
   this.messageList = document.getElementById('messages');
@@ -323,19 +325,19 @@ FriendlyChat.prototype.checkSetup = function() {
 
 window.addEventListener('load' , function() {
   window.friendlyChat = new FriendlyChat();
+  window.friendlyChat = new CardForSession();
 });
 
 function CardForSession(){
-    this.checkSetup();
-    this.initFirebase();
+    this.initcard();
 }
 
+
 // Sets up shortcuts to Firebase features and initiate firebase auth.
-CardForSession.prototype.initFirebase = function() {
+CardForSession.prototype.initcard = function() {
     // Shortcuts to Firebase SDK features.
     this.auth = firebase.auth();
     this.database = firebase.database();
-    this.storage = firebase.storage();
 
     this.CardReadings();
 };
@@ -352,44 +354,54 @@ CardForSession.prototype.LoadCard = function(){
     this.oralSessionlist = this.database.ref('oralPresentationData');
     // Make sure we remove all previous listeners.
     this.oralSessionlist.off();
-
     var setMessage = function(snap) {
         var data = snap.val();
         this.displayMessage(data.number, data.body, data.title, data.whois);
     }.bind(this);
+    this.oralSessionlist.limitToLast(12).on('child_added', setMessage);
+    this.oralSessionlist.limitToLast(12).on('child_changed', setMessage);
 };
-
 
 // Template for messages.
 CardForSession.MESSAGE_TEMPLATE =
     '<div class="qa-card">' +
-    '<div class="spacing"><div class="pic"></div></div>' +
-    '<div class="message"></div>' +
-    '<div class="name"></div>' +
+    '<div class="spacing"></div>' +
+    '<div class="title"></div>' +
+    '<div class="body"></div>' +
     '</div>';
 
 // Displays a Message in the UI.
 CardForSession.prototype.displayMessage = function(number, body, title, whois) {
     var div = document.getElementById(key);
+    if (!div) {
+        var container = document.createElement('div');
+        container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
+        div = container.firstChild;
+        div.setAttribute('number', key);
+        this.messageList.appendChild(div);
+    }
+    alert(div);
     // If an element for that message does not exists yet we create it.
-    if (!number) {
+    var container = document.createElement('div');
+    container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
+    /*if (!number) {
         var container = document.createElement('div');
         container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
         number = container.firstChild;
         div.setAttribute('number', key);
         this.messageList.appendChild(div);
     }
-
-    div.querySelector('.body').textContent = name;
+*/
+   /* div.querySelector('.body').textContent = name;
     var messageElement = div.querySelector('.body');
     if (body) { // If the message is text.
         messageElement.textContent = message;
         // Replace all line breaks by <br>.
         messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-    }
-
+    }*/
     // Show the card fading-in.
     setTimeout(function() {div.classList.add('visible')}, 1);
     this.messageList.scrollTop = this.messageList.scrollHeight;
     this.messageInput.focus();
+    //alert(hoge);
 };
