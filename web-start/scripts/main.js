@@ -371,8 +371,13 @@ CardForSession.MESSAGE_TEMPLATE =
     '</div>';
 
 // Displays a Message in the UI.
-CardForSession.prototype.displayMessage = function(number, body, title, whois) {
-    var div = document.getElementById(key);
+CardForSession.prototype.displayMessage = function() {
+    var commentsRef = firebase.database().ref('oralPresentationData')
+    document.getElementById("texts").innerHTML = "こんにちは！";
+    var div = document.getElementById(number);
+
+
+    /*var div = document.getElementById(number);
     if (!div) {
         var container = document.createElement('div');
         container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
@@ -384,6 +389,14 @@ CardForSession.prototype.displayMessage = function(number, body, title, whois) {
     // If an element for that message does not exists yet we create it.
     var container = document.createElement('div');
     container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
+
+
+    var messageElement = div.querySelector('.body');
+    if (body) { // If the message is text.
+        messageElement.textContent = message;
+        // Replace all line breaks by <br>.
+        messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+    }*/
     /*if (!number) {
         var container = document.createElement('div');
         container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
@@ -405,3 +418,4 @@ CardForSession.prototype.displayMessage = function(number, body, title, whois) {
     this.messageInput.focus();
     //alert(hoge);
 };
+
