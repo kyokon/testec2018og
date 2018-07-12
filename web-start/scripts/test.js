@@ -33,8 +33,20 @@ function test(){
         snapshot.forEach(function(child){
             console.log(child.key);
             console.log(child.val()["whois"]);
+
+            document.getElementById('id01').innerHTML = child.key;
         });
     });
+
+    var dataRef = firebase.database().ref('oralPresentationData/s1/');
+    dataRef.once("value")
+        .then(function(snapshot) {
+            document.getElementById("body").innerHTML = snapshot.child("body").val();
+            document.getElementById("number").innerHTML = snapshot.child("number").val();
+            document.getElementById("title").innerHTML = snapshot.child("title").val();
+            document.getElementById("whois").innerHTML = snapshot.child("whois").val();
+        });
+
 
     /*FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("something");
