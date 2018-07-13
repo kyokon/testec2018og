@@ -52,24 +52,23 @@ function FriendlyChat() {
   }.bind(this));
   this.mediaCapture.addEventListener('change', this.saveImageMessage.bind(this));
 
-  var number_database =
-  this.initFirebase(number_database);
+  this.initFirebase();
 }
 
 // Sets up shortcuts to Firebase features and initiate firebase auth.
-FriendlyChat.prototype.initFirebase = function(number_database) {
+FriendlyChat.prototype.initFirebase = function() {
     // Shortcuts to Firebase SDK features.
     this.auth = firebase.auth();
     this.database = firebase.database();
     this.storage = firebase.storage();
     // Initiates Firebase auth and listen to auth state changes.
-    this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this),number_database);
+    this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
 
 // Loads chat messages history and listens for upcoming ones.
-FriendlyChat.prototype.loadMessages = function(number_database) {
+FriendlyChat.prototype.loadMessages = function() {
     // Reference to the /messages/ database path.
-    this.messagesRef = this.database.ref('messages'+number_database);
+    this.messagesRef = this.database.ref('messages'+2);
     // Make sure we remove all previous listeners.
     this.messagesRef.off();
 
@@ -175,7 +174,7 @@ FriendlyChat.prototype.signOut = function() {
 };
 
 // Triggers when the auth state change for instance when the user signs-in or signs-out.
-FriendlyChat.prototype.onAuthStateChanged = function(user,number_database) {
+FriendlyChat.prototype.onAuthStateChanged = function(user) {
   if (user) { // User is signed in!
     // Get profile pic and user's name from the Firebase user object.
     var profilePicUrl = user.photoURL; // Only change these two lines!
@@ -194,7 +193,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user,number_database) {
     this.signInButton.setAttribute('hidden', 'true');
 
     // We load currently existing chat messages.
-    this.loadMessages(number_database);
+    this.loadMessages();
 
     // We save the Firebase Messaging Device token and enable notifications.
     this.saveMessagingDeviceToken();

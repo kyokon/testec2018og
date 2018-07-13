@@ -91,3 +91,59 @@
 [debug] [2018-07-03T08:32:33.433Z] Starting @google-cloud/functions-emulator
 [debug] [2018-07-03T08:32:34.468Z] Parsing function triggers
 [info] i  functions: No HTTPS functions found. Use firebase functions:shell if you would like to emulate other types of functions.
+[debug] [2018-07-12T10:32:32.735Z] Error: connect ETIMEDOUT 172.217.26.3:443
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1161:14)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2018-07-12T10:34:05.113Z] ----------------------------------------------------------------------
+[debug] [2018-07-12T10:34:05.114Z] Command:       /usr/local/Cellar/node/10.2.1/bin/node /usr/local/bin/firebase serve
+[debug] [2018-07-12T10:34:05.114Z] CLI Version:   3.19.3
+[debug] [2018-07-12T10:34:05.114Z] Platform:      darwin
+[debug] [2018-07-12T10:34:05.114Z] Node Version:  v10.2.1
+[debug] [2018-07-12T10:34:05.115Z] Time:          Thu Jul 12 2018 19:34:05 GMT+0900 (JST)
+[debug] [2018-07-12T10:34:05.115Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-07-12T10:34:05.130Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-07-12T10:34:05.130Z] > authorizing via signed-in user
+[debug] [2018-07-12T10:34:05.132Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-07-12T10:34:05.132Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/8_HCgGkxTOEfuVgUqIkF_EMFI-u2uu5NBntdzB0oQ20',
+  client_id:
+   '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope:
+   'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Thu Jul 12 2018 19:34:05 GMT+0900 (JST)
+[debug] [2018-07-12T10:34:05.308Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-12T10:34:05.318Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/ec2018og  
+  
+ Thu Jul 12 2018 19:34:05 GMT+0900 (JST)
+[debug] [2018-07-12T10:34:06.450Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-12T10:34:06.452Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/ec2018og/tokens  
+  
+ Thu Jul 12 2018 19:34:06 GMT+0900 (JST)
+[debug] [2018-07-12T10:34:07.175Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-12T10:34:07.176Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/ec2018og  
+  
+ Thu Jul 12 2018 19:34:07 GMT+0900 (JST)
+[debug] [2018-07-12T10:34:08.167Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/kyokonakajima/testfc/friendlychat-web/web-start'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-07-12T10:34:08.952Z] Fetching environment
+[debug] [2018-07-12T10:34:08.954Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/371784527983:getServerAppConfig  
+  
+ Thu Jul 12 2018 19:34:08 GMT+0900 (JST)
+[debug] [2018-07-12T10:34:08.955Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/371784527983/clients/_:getWebAppConfig  
+  
+ Thu Jul 12 2018 19:34:08 GMT+0900 (JST)
+[debug] [2018-07-12T10:34:09.679Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-12T10:34:09.696Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-12T10:34:09.697Z] Starting @google-cloud/functions-emulator
+[info] i  hosting: Serving hosting files from: ./
+[info] ✔  hosting: Local server: http://localhost:5000
+
+[debug] [2018-07-12T10:34:11.245Z] Parsing function triggers
+[info] i  functions: No HTTPS functions found. Use firebase functions:shell if you would like to emulate other types of functions.
