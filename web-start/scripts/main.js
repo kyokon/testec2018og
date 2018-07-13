@@ -62,13 +62,14 @@ FriendlyChat.prototype.initFirebase = function() {
     this.database = firebase.database();
     this.storage = firebase.storage();
     // Initiates Firebase auth and listen to auth state changes.
-    this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
+    this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));å
 };
 
 // Loads chat messages history and listens for upcoming ones.
-FriendlyChat.prototype.loadMessages = function() {
+FriendlyChat.prototype.loadMessages = function(databese_number) {
     // Reference to the /messages/ database path.
-    this.messagesRef = this.database.ref('messages'+2);
+    //var databese_number = 2;
+    this.messagesRef = this.database.ref('messages'+databese_number);
     // Make sure we remove all previous listeners.
     this.messagesRef.off();
 
@@ -179,6 +180,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
     // Get profile pic and user's name from the Firebase user object.
     var profilePicUrl = user.photoURL; // Only change these two lines!
     var userName = user.displayName;   // Only change these two lines!
+      var databese_number = 2;
 
     // Set the user's profile pic and name.
     this.userPic.style.backgroundImage = 'url(' + profilePicUrl + ')';
@@ -193,7 +195,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
     this.signInButton.setAttribute('hidden', 'true');
 
     // We load currently existing chat messages.
-    this.loadMessages();
+    this.loadMessages(databese_number);
 
     // We save the Firebase Messaging Device token and enable notifications.
     this.saveMessagingDeviceToken();
