@@ -17,7 +17,7 @@
 
 
 window.addEventListener('load' , function() {
-    window.friendlyChat = new Main();
+    window.TestChat = new Main();
 });
 
 Main.MESSAGE_TEMPLATE =
@@ -36,56 +36,16 @@ function Main(){
     this.signOutButton.addEventListener('click', this.signOut.bind(this));
     this.signInButton.addEventListener('click', this.signIn.bind(this));
 
-    this.messageforms = document.getElementById('messages');
+    this.messageForm = document.getElementById('message-form');
+    this.messageInput = document.getElementById('message');
+
+    this.submitButton = document.getElementById('submit');
+
 
     this.init();
-/*
-    //test here
-    var div = document.getElementById(key);
-    // If an element for that message does not exists yet we create it.
-    if (!div) {
-        var container = document.createElement('div');
-        container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
-        div = container.firstChild;
-        div.setAttribute('id', key);
-        this.messageList.appendChild(div);
-    }
-    div.querySelector('.name').textContent = name;
-    var messageElement = div.querySelector('.message');
-    if (text) { // If the message is text.
-        messageElement.textContent = text;
-        // Replace all line breaks by <br>.
-        messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
-    }
-*/
-
-    //test end
-
 
     this.database = firebase.database();
 
-/*
-        firebase.database().ref("oralPresentationData/").once("value").then(function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-                // key will be "ada" the first time and "alan" the second time
-                var key = childSnapshot.key;
-                // childData will be the actual contents of the child
-                var childData = childSnapshot.val();
-            });
-        });
-
-*/
-/*
-    firebase.database().ref('oralPresentationData/').once('value').then(function(snapshot) {
-        snapshot.forEach(function(child){
-            console.log(child.key);
-            console.log(child.val()["whois"]);
-            document.getElementById("body").innerHTML = child.val()["body"];
-            document.getElementById("number").innerHTML = child.val()["number"];
-            document.getElementById("title").innerHTML = child.val()["title"];
-            document.getElementById("whois").innerHTML = child.val()["whois"];
-        });
-    });*/
 
     firebase.database().ref('oralPresentationData/s1').once('value').then(function(snapshot) {
             document.getElementById("body").innerHTML = snapshot.val()["body"];
@@ -94,18 +54,12 @@ function Main(){
             document.getElementById("whois").innerHTML = snapshot.val()["whois"];
     });
 
+    // Toggle for the button.
+    var buttonTogglingHandler = this.toggleButton.bind(this);
+    this.messageInput.addEventListener('keyup', buttonTogglingHandler);
+    this.messageInput.addEventListener('change', buttonTogglingHandler);
+    this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
 
-
-/*
-    var dataRef = firebase.database().ref('oralPresentationData/s1/');
-    dataRef.once("value")
-        .then(function(snapshot) {
-            document.getElementById("body").innerHTML = snapshot.child("body").val();
-            document.getElementById("number").innerHTML = snapshot.child("number").val();
-            document.getElementById("title").innerHTML = snapshot.child("title").val();
-            document.getElementById("whois").innerHTML = snapshot.child("whois").val();
-        });
-*/
 }
 
 
@@ -120,6 +74,11 @@ Main.prototype.loadmessages = function() {
     // Sign in Firebase using popup auth and Google as the identity provider.
 
     this.database = firebase.database();
+
+    this.messagesRef = this.database.ref('oralPresentationData/');
+    // Make sure we remove all previous listeners.
+    this.messagesRef.off();
+
     var testvalue = "s1"
 
     $('.btn').on('click', function() {
@@ -162,6 +121,42 @@ Main.prototype.loadmessages = function() {
 
 
 
+// Saves a new message on the Firebase DB.
+Main.prototype.saveMessage = function(e) {
+    e.preventDefault();
+
+    var messagesRef = firebase.database().ref('oralPresentationData/');
+    console.log(messagesRef);
+    // Check that the user entered a message and is signed in.
+    if (this.messageInput.value && this.checkSignedInWithMessage()) {
+        var currentUser = this.auth.currentUser;
+        // Add a new message entry to the Firebase Database.
+        messagesRef.push().set({
+            whois: currentUser.displayName,
+            title: 'test',
+            body: this.messageInput.value,
+            number: '10',
+        });
+    }
+};
+
+// Resets the given MaterialTextField.
+Main.resetMaterialTextfield = function(element) {
+    element.value = '';
+    element.parentNode.MaterialTextfield.boundUpdateClassesHandler();
+};
+
+
+
+
+Main.prototype.toggleButton = function() {
+    if (this.messageInput.value) {
+        this.submitButton.removeAttribute('disabled');
+    } else {
+        this.submitButton.setAttribute('disabled', 'true');
+    }
+};
+
 
 // Signs-in Friendly Chat.
 Main.prototype.signIn = function() {
@@ -175,6 +170,24 @@ Main.prototype.signOut = function() {
     // Sign out of Firebase.
     this.auth.signOut();
 };
+
+
+// Returns true if user is signed-in. Otherwise false and displays a message.
+Main.prototype.checkSignedInWithMessage = function() {
+    // Return true if the user is signed in Firebase
+    if (this.auth.currentUser) {
+        return true;
+    }
+
+    // Display a message to the user using a Toast.
+    var data = {
+        message: 'You must sign-in first',
+        timeout: 2000
+    };
+    this.signInSnackbar.MaterialSnackbar.showSnackbar(data);
+    return false;
+};
+
 
 
 
@@ -194,6 +207,10 @@ Main.prototype.onAuthStateChanged = function(user) {
         this.signOutButton.removeAttribute('hidden');
         this.signInButton.setAttribute('hidden', 'true');
 
+
+        // We save the Firebase Messaging Device token and enable notifications.
+        this.saveMessagingDeviceToken();
+
     } else { // User is signed out!
         // Hide user's profile and sign-out button.
         this.userName.setAttribute('hidden', 'true');
@@ -202,4 +219,22 @@ Main.prototype.onAuthStateChanged = function(user) {
         // Show sign-in button.
         this.signInButton.removeAttribute('hidden');
     }
+
+};
+
+// Saves the messaging device token to the datastore.
+Main.prototype.saveMessagingDeviceToken = function() {
+    firebase.messaging().getToken().then(function(currentToken) {
+        if (currentToken) {
+            console.log('Got FCM device token:', currentToken);
+            // Saving the Device Token to the datastore.
+            firebase.database().ref('/fcmTokens').child(currentToken)
+                .set(firebase.auth().currentUser.uid);
+        } else {
+            // Need to request permissions to show notifications.
+            this.requestNotificationsPermissions();
+        }
+    }.bind(this)).catch(function(error){
+        console.error('Unable to get messaging token.', error);
+    });
 };

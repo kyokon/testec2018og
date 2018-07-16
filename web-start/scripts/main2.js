@@ -330,9 +330,9 @@ FriendlyChat.prototype.checkSetup = function() {
 
 window.addEventListener('load' , function() {
   window.friendlyChat = new FriendlyChat();
-  window.friendlyChat = new CardForSession();
+  //window.friendlyChat = new CardForSession();
 });
-
+/*
 function CardForSession(){
     this.initcard();
 }
@@ -419,5 +419,4 @@ CardForSession.prototype.displayMessage = function() {
     }*/
     // Show the card fading-in.
     //alert(hoge);
-};
-
+//};

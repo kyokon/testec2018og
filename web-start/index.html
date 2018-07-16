@@ -27,13 +27,13 @@
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="application-name" content="Friendly Chat">
+  <meta name="application-name" content="TestChat">
   <meta name="theme-color" content="#303F9F">
 
   <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Friendly Chat">
+  <meta name="apple-mobile-web-app-title" content="TestChat">
   <meta name="apple-mobile-web-app-status-bar-style" content="#303F9F">
 
   <!-- Tile icon for Win8 -->
@@ -148,32 +148,15 @@
                 <div class="card" style="margin-top: 5px; margin-left: 5px;  margin-right: 5px; width: 95%; height: 2rem">
                         <p class="card-text">test</p>
                 </div>
-
                         <div id="messages"></div>
-<!--
-                <form>
-                    <div class="form-group">
-                        <label>number</label>
-                        <input type="number" class="form" placeholder="number">
+                <form id="message-form" action="#">
+                    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                        <input class="mdl-textfield__input" type="text" id="message">
                     </div>
-
-                    <div class="form-group">
-                        <label>title</label>
-                        <input type="title" class="form" placeholder="title">
-                    </div>
-
-                    <div class="form-group">
-                        <label>body</label>
-                        <input type="body" class="form" placeholder="body">
-                    </div>
-
-                    <div class="form-group">
-                        <label>whois</label>
-                        <input type="whois" class="form" placeholder="whois">
-                    </div>
-
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>-->
+                    <button id="submit" disabled type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect">
+                        Send
+                    </button>
+                </form>
             </div>
         </div>
     </div>
