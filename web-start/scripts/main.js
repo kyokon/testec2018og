@@ -15,16 +15,6 @@
  */
 'use strict';
 
-function test() {
-  var value = 2;
-    testReadValue(value);
-}
-test();
-
-function testReadValue(value) {
-    console.log(value);
-}
-
 
 window.addEventListener('load' , function() {
     window.friendlyChat = new Main();
@@ -32,43 +22,59 @@ window.addEventListener('load' , function() {
 
 Main.MESSAGE_TEMPLATE =
     '<div class="message-container">' +
-    '<div class="spacing"><div class="pic"></div></div>' +
-    '<div class="message"></div>' +
-    '<div class="name"></div>' +
+    '<div class="row"><div class="number"></div><div class="title"></div><div class="body"></div><div class="whois"></div></div>' +
     '</div>';
 
 
 function Main(){
-
-
-
     this.userName = document.getElementById('user-name');
     this.signInButton = document.getElementById('sign-in');
     this.signOutButton = document.getElementById('sign-out');
 
     var value = 3;
-    testReadValue(value);
     // Saves
     this.signOutButton.addEventListener('click', this.signOut.bind(this));
     this.signInButton.addEventListener('click', this.signIn.bind(this));
+
+    this.messageforms = document.getElementById('messages');
+
     this.init();
+/*
+    //test here
+    var div = document.getElementById(key);
+    // If an element for that message does not exists yet we create it.
+    if (!div) {
+        var container = document.createElement('div');
+        container.innerHTML = FriendlyChat.MESSAGE_TEMPLATE;
+        div = container.firstChild;
+        div.setAttribute('id', key);
+        this.messageList.appendChild(div);
+    }
+    div.querySelector('.name').textContent = name;
+    var messageElement = div.querySelector('.message');
+    if (text) { // If the message is text.
+        messageElement.textContent = text;
+        // Replace all line breaks by <br>.
+        messageElement.innerHTML = messageElement.innerHTML.replace(/\n/g, '<br>');
+    }
+*/
 
-    var testvalue = "s1"
-
-    $('.btn').on('click', function() {
-        var testvalue = $('#').attr("value");
-        console.log(testvalue);
-
-        firebase.database().ref('oralPresentationData/'+testvalue).once('value').then(function(snapshot) {
-            document.getElementById("body").innerHTML = snapshot.val()["body"];
-            document.getElementById("number").innerHTML = snapshot.val()["number"];
-            document.getElementById("title").innerHTML = snapshot.val()["title"];
-            document.getElementById("whois").innerHTML = snapshot.val()["whois"];
-        });
-    });
+    //test end
 
 
     this.database = firebase.database();
+
+/*
+        firebase.database().ref("oralPresentationData/").once("value").then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                // key will be "ada" the first time and "alan" the second time
+                var key = childSnapshot.key;
+                // childData will be the actual contents of the child
+                var childData = childSnapshot.val();
+            });
+        });
+
+*/
 /*
     firebase.database().ref('oralPresentationData/').once('value').then(function(snapshot) {
         snapshot.forEach(function(child){
@@ -81,7 +87,7 @@ function Main(){
         });
     });*/
 
-    firebase.database().ref('oralPresentationData/'+testvalue).once('value').then(function(snapshot) {
+    firebase.database().ref('oralPresentationData/s1').once('value').then(function(snapshot) {
             document.getElementById("body").innerHTML = snapshot.val()["body"];
             document.getElementById("number").innerHTML = snapshot.val()["number"];
             document.getElementById("title").innerHTML = snapshot.val()["title"];
@@ -103,12 +109,59 @@ function Main(){
 }
 
 
-
 Main.prototype.init = function(){
     this.auth = firebase.auth();
 
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
+    this.loadmessages();
 }
+
+Main.prototype.loadmessages = function() {
+    // Sign in Firebase using popup auth and Google as the identity provider.
+
+    this.database = firebase.database();
+    var testvalue = "s1"
+
+    $('.btn').on('click', function() {
+        var testvalue = $('#').attr("value");
+        //console.log(testvalue);
+
+
+
+        var messageforms = document.getElementById('messages');
+
+        firebase.database().ref('oralPresentationData/').once('value').then(function(snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var key = childSnapshot.key;
+                var childData = childSnapshot.val();
+                var div = document.getElementById(key);
+                if (!div) {
+                    var container = document.createElement('div');
+                    container.innerHTML = Main.MESSAGE_TEMPLATE;
+                    div = container.firstChild;
+                    div.setAttribute('id', key);
+
+                    div.querySelector('.number').textContent = childSnapshot.val()["number"];
+                    div.querySelector('.title').textContent = childSnapshot.val()["title"];
+                    div.querySelector('.body').textContent = childSnapshot.val()["body"];
+                    div.querySelector('.whois').textContent = childSnapshot.val()["whois"];
+                    console.log(div);
+                    messageforms.appendChild(div);
+                }
+
+                /*これだと上書きになる
+                document.getElementById("body").innerHTML = childSnapshot.val()["body"];
+                document.getElementById("number").innerHTML = childSnapshot.val()["number"];
+                document.getElementById("title").innerHTML = childSnapshot.val()["title"];
+                document.getElementById("whois").innerHTML = childSnapshot.val()["whois"];
+                */
+            });
+        });
+    });
+};
+
+
+
 
 // Signs-in Friendly Chat.
 Main.prototype.signIn = function() {

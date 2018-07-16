@@ -54,7 +54,6 @@ main, #messages-card {
 #messages {
   overflow-y: auto;
   margin-bottom: 10px;
-  height: calc(100% - 80px);
 }
 #message-filler {
   flex-grow: 1;
@@ -67,8 +66,7 @@ main, #messages-card {
   margin-top: 10px;
   border-top: 1px solid #f3f3f3;
   padding-top: 10px;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
+  padding-left: 20px;
 }
 .message-container.visible {
   opacity: 1;
@@ -85,9 +83,38 @@ main, #messages-card {
   display: table-cell;
   vertical-align: top;
 }
+/*
+.message-container .title {
+    display: inline-block;
+    width: 100%;
+    padding-left: 40px;
+    color: #bbb;
+    font-style: italic;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+.message-container .body {
+    display: inline-block;
+    width: 100%;
+    padding-left: 40px;
+    color: #bbb;
+    font-style: italic;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+.message-container .whois {
+    display: inline-block;
+    width: 100%;
+    padding-left: 40px;
+    color: #bbb;
+    font-style: italic;
+    font-size: 12px;
+    box-sizing: border-box;
+}*/
 .message-container .message {
   display: table-cell;
   width: calc(100% - 40px);
+
   padding: 5px 0 5px 10px;
 }
 .message-container .name {

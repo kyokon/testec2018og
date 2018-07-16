@@ -63,16 +63,16 @@ FriendlyChat.prototype.initFirebase = function() {
     this.storage = firebase.storage();
     var database_number = 2;
 
-    this.auth.loadDatabase(database_number);
+    //this.auth.loadDatabase();
     // Initiates Firebase auth and listen to auth state changes.
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
 };
 
 // Loads chat messages history and listens for upcoming ones.
-FriendlyChat.prototype.loadMessages = function(database_number) {
+FriendlyChat.prototype.loadMessages = function() {
     // Reference to the /messages/ database path.
-    //var databese_number = 2;
-    this.messagesRef = this.database.ref('messages'+database_number);
+    var databese_number = 2;
+    this.messagesRef = this.database.ref('messages2');
     // Make sure we remove all previous listeners.
     this.messagesRef.off();
 
@@ -198,7 +198,7 @@ FriendlyChat.prototype.onAuthStateChanged = function(user) {
     this.signInButton.setAttribute('hidden', 'true');
 
     // We load currently existing chat messages.
-    this.loadMessages(database_number);
+    this.loadMessages();
 
     // We save the Firebase Messaging Device token and enable notifications.
     this.saveMessagingDeviceToken();
