@@ -188,7 +188,6 @@ Main.resetMaterialTextfield = function(element) {
 
 
 
-
 Main.prototype.toggleButton = function() {
     if (this.messageInput.value) {
         this.submitButton.removeAttribute('disabled');
