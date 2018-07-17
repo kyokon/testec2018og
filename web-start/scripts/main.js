@@ -123,10 +123,7 @@ Main.prototype.clickMessageButton = function(){
 
         var messageforms = document.getElementById('messages');
         var refdata= 'oralPresentationData'+testvalue;
-        console.log(refdata);
-        
-        console.log('a');
-        console.log(messageforms);
+
         while(messageforms.hasChildNodes()){
             messageforms.removeChild(messageforms.firstChild);
         }
@@ -154,13 +151,13 @@ Main.prototype.clickMessageButton = function(){
             });
         });
     });
-}
+};
 
 // Saves a new message on the Firebase DB.
 Main.prototype.saveMessage = function(e) {
     e.preventDefault();
 
-    var messagesRef = firebase.database().ref('oralPresentationData/');
+    var messagesRef = firebase.database().ref('oralPresentationData1/');
     console.log(messagesRef);
     // Check that the user entered a message and is signed in.
     if (this.messageInput.value && this.checkSignedInWithMessage()) {
