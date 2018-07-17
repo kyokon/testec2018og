@@ -47,7 +47,7 @@ function Main(){
     this.database = firebase.database();
 
 
-    firebase.database().ref('oralPresentationData/s1').once('value').then(function(snapshot) {
+    firebase.database().ref('oralPresentationData1/s1').once('value').then(function(snapshot) {
             document.getElementById("body").innerHTML = snapshot.val()["body"];
             document.getElementById("number").innerHTML = snapshot.val()["number"];
             document.getElementById("title").innerHTML = snapshot.val()["title"];
@@ -69,7 +69,7 @@ Main.prototype.init = function(){
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
     this.loadmessages();
     this.clickMessageButton();
-}
+};
 
 
 Main.prototype.loadmessages = function() {
@@ -116,21 +116,28 @@ Main.prototype.loadmessages = function() {
 Main.prototype.clickMessageButton = function(){
     this.database = firebase.database();
 
-    this.messagesRef = this.database.ref('oralPresentationData/');
-    // Make sure we remove all previous listeners.
-    this.messagesRef.off();
-
-    var testvalue = "s1"
+    var testvalue = "2"
     $('.btn').on('click', function() {
-        var testvalue = $('#').attr("value");
+        var testvalue =  $(this).attr("value");
+        console.log(testvalue);
 
         var messageforms = document.getElementById('messages');
+        var refdata= 'oralPresentationData'+testvalue;
+        console.log(refdata);
+        
+        console.log('a');
+        console.log(messageforms);
+        while(messageforms.hasChildNodes()){
+            messageforms.removeChild(messageforms.firstChild);
+        }
 
-        firebase.database().ref('oralPresentationData/').once('value').then(function(snapshot) {
+
+        firebase.database().ref(refdata).once('value').then(function(snapshot) {
+
             snapshot.forEach(function (childSnapshot) {
                 var key = childSnapshot.key;
-                var childData = childSnapshot.val();
                 var div = document.getElementById(key);
+
                 if (!div) {
                     var container = document.createElement('div');
                     container.innerHTML = Main.MESSAGE_TEMPLATE;
@@ -141,16 +148,9 @@ Main.prototype.clickMessageButton = function(){
                     div.querySelector('.title').textContent = childSnapshot.val()["title"];
                     div.querySelector('.body').textContent = childSnapshot.val()["body"];
                     div.querySelector('.whois').textContent = childSnapshot.val()["whois"];
-                    console.log(div);
                     messageforms.appendChild(div);
                 }
 
-                /*これだと上書きになる
-                document.getElementById("body").innerHTML = childSnapshot.val()["body"];
-                document.getElementById("number").innerHTML = childSnapshot.val()["number"];
-                document.getElementById("title").innerHTML = childSnapshot.val()["title"];
-                document.getElementById("whois").innerHTML = childSnapshot.val()["whois"];
-                */
             });
         });
     });

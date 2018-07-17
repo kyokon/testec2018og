@@ -52,7 +52,7 @@ main, #messages-card {
   padding-bottom: 0;
 }
 #messages {
-  overflow-y: auto;
+  overflow: auto;
   margin-bottom: 10px;
 }
 #message-filler {
@@ -67,6 +67,7 @@ main, #messages-card {
   border-top: 1px solid #f3f3f3;
   padding-top: 10px;
   padding-left: 20px;
+  overflow: auto;
 }
 .message-container.visible {
   opacity: 1;
@@ -82,17 +83,16 @@ main, #messages-card {
 .message-container .spacing {
   display: table-cell;
   vertical-align: top;
+    overflow: scroll;
 }
 
 
-.message-srcollbar {
-    overflow:auto;
+.message-scrollbar {
+    overflow-y:scroll;
     width:100%;
     height:100%;
     padding:5px;
-    border:1px solid #000;
-    background-color:#F9F9F9;
-    color:#000;
+    border:1px;
     font-size:12px;
 }
 /*
