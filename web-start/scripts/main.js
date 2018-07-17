@@ -68,7 +68,9 @@ Main.prototype.init = function(){
 
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
     this.loadmessages();
+    this.clickMessageButton();
 }
+
 
 Main.prototype.loadmessages = function() {
     // Sign in Firebase using popup auth and Google as the identity provider.
@@ -79,13 +81,48 @@ Main.prototype.loadmessages = function() {
     // Make sure we remove all previous listeners.
     this.messagesRef.off();
 
-    var testvalue = "s1"
+    var messageforms = document.getElementById('messages');
 
+    firebase.database().ref('oralPresentationData/').once('value').then(function(snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            var key = childSnapshot.key;
+            var childData = childSnapshot.val();
+            var div = document.getElementById(key);
+            if (!div) {
+                var container = document.createElement('div');
+                container.innerHTML = Main.MESSAGE_TEMPLATE;
+                div = container.firstChild;
+                div.setAttribute('id', key);
+
+                div.querySelector('.number').textContent = childSnapshot.val()["number"];
+                div.querySelector('.title').textContent = childSnapshot.val()["title"];
+                div.querySelector('.body').textContent = childSnapshot.val()["body"];
+                div.querySelector('.whois').textContent = childSnapshot.val()["whois"];
+                console.log(div);
+                messageforms.appendChild(div);
+            }
+
+            /*これだと上書きになる
+            document.getElementById("body").innerHTML = childSnapshot.val()["body"];
+            document.getElementById("number").innerHTML = childSnapshot.val()["number"];
+            document.getElementById("title").innerHTML = childSnapshot.val()["title"];
+            document.getElementById("whois").innerHTML = childSnapshot.val()["whois"];
+            */
+        });
+    });
+};
+
+
+Main.prototype.clickMessageButton = function(){
+    this.database = firebase.database();
+
+    this.messagesRef = this.database.ref('oralPresentationData/');
+    // Make sure we remove all previous listeners.
+    this.messagesRef.off();
+
+    var testvalue = "s1"
     $('.btn').on('click', function() {
         var testvalue = $('#').attr("value");
-        //console.log(testvalue);
-
-
 
         var messageforms = document.getElementById('messages');
 
@@ -117,9 +154,7 @@ Main.prototype.loadmessages = function() {
             });
         });
     });
-};
-
-
+}
 
 // Saves a new message on the Firebase DB.
 Main.prototype.saveMessage = function(e) {
@@ -136,7 +171,12 @@ Main.prototype.saveMessage = function(e) {
             title: 'test',
             body: this.messageInput.value,
             number: '10',
-        });
+        }).then(function () {
+            Main.resetMaterialTextfield(this.messageInput);
+            this.toggleButton();
+            this.loadmessages();
+        }.bind(this));
+
     }
 };
 
