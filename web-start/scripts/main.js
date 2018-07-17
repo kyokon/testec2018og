@@ -25,17 +25,27 @@ Main.MESSAGE_TEMPLATE =
     '<div class="row"><div class="number"></div><div class="title"></div><div class="body"></div><div class="whois"></div></div>' +
     '</div>';
 
+Main.MESSAGE_TEMPLATE2 =
+    '<div class="card" style="margin-top: 5px; margin-left: 5px;  margin-right: 5px; width: 15rem; height: 15rem">\n' +
+    '<div class="card-body">\n' +
+    '<img class="ocpic" style="width: 50%; height: 50%">\n' +
+    '<h4 class="octitle">I am Nameko1</h4>\n' +
+    '<h6 class="ocname"></h6>\n' +
+    '<p class="ocbody"></p>\n' +
+    '</div>\n' +
+    '</div>';
+
 
 function Main(){
     this.userName = document.getElementById('user-name');
     this.signInButton = document.getElementById('sign-in');
     this.signOutButton = document.getElementById('sign-out');
 
-    var value = 3;
     // Saves
     this.signOutButton.addEventListener('click', this.signOut.bind(this));
     this.signInButton.addEventListener('click', this.signIn.bind(this));
 
+    //message
     this.messageForm = document.getElementById('message-form');
     this.messageInput = document.getElementById('message');
 
@@ -59,7 +69,6 @@ function Main(){
     this.messageInput.addEventListener('keyup', buttonTogglingHandler);
     this.messageInput.addEventListener('change', buttonTogglingHandler);
     this.messageForm.addEventListener('submit', this.saveMessage.bind(this));
-
 }
 
 
@@ -68,6 +77,7 @@ Main.prototype.init = function(){
 
     this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
     this.loadmessages();
+    this.loadcards();
     this.clickMessageButton();
 };
 
@@ -77,16 +87,11 @@ Main.prototype.loadmessages = function() {
 
     this.database = firebase.database();
 
-    this.messagesRef = this.database.ref('oralPresentationData/');
-    // Make sure we remove all previous listeners.
-    this.messagesRef.off();
-
     var messageforms = document.getElementById('messages');
 
     firebase.database().ref('oralPresentationData/').once('value').then(function(snapshot) {
         snapshot.forEach(function (childSnapshot) {
             var key = childSnapshot.key;
-            var childData = childSnapshot.val();
             var div = document.getElementById(key);
             if (!div) {
                 var container = document.createElement('div');
@@ -98,16 +103,37 @@ Main.prototype.loadmessages = function() {
                 div.querySelector('.title').textContent = childSnapshot.val()["title"];
                 div.querySelector('.body').textContent = childSnapshot.val()["body"];
                 div.querySelector('.whois').textContent = childSnapshot.val()["whois"];
-                console.log(div);
                 messageforms.appendChild(div);
             }
+        });
+    });
+};
 
-            /*これだと上書きになる
-            document.getElementById("body").innerHTML = childSnapshot.val()["body"];
-            document.getElementById("number").innerHTML = childSnapshot.val()["number"];
-            document.getElementById("title").innerHTML = childSnapshot.val()["title"];
-            document.getElementById("whois").innerHTML = childSnapshot.val()["whois"];
-            */
+
+Main.prototype.loadcards = function() {
+    // Sign in Firebase using popup auth and Google as the identity provider.
+
+    this.database = firebase.database();
+
+    var oralcards = document.getElementById('oralcard');
+
+    firebase.database().ref('OralCard/').once('value').then(function(snapshot) {
+        snapshot.forEach(function (childSnapshot) {
+            var key = childSnapshot.key;
+            var div = document.getElementById(key);
+            if (!div) {
+                var container = document.createElement('div');
+                console.log(container);
+                container.innerHTML = Main.MESSAGE_TEMPLATE2;
+                div = container.firstChild;
+                div.setAttribute('id', key);
+
+                div.querySelector('.octitle').textContent = childSnapshot.val()["octitle"];
+                div.querySelector('.ocbody').textContent = childSnapshot.val()["ocbody"];
+                div.querySelector('.ocname').textContent = childSnapshot.val()["ocname"];
+                div.querySelector('.ocpic').src = childSnapshot.val()["ocphotoUrl"];
+                oralcards.appendChild(div);
+            }
         });
     });
 };

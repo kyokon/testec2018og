@@ -442,3 +442,64 @@
 [debug] [2018-07-13T08:16:47.587Z] Starting @google-cloud/functions-emulator
 [debug] [2018-07-13T08:16:48.621Z] Parsing function triggers
 [info] i  functions: No HTTPS functions found. Use firebase functions:shell if you would like to emulate other types of functions.
+[debug] [2018-07-17T13:43:44.633Z] Error: socket hang up
+    at createHangUpError (_http_client.js:313:15)
+    at TLSSocket.socketOnEnd (_http_client.js:416:23)
+    at TLSSocket.emit (events.js:187:15)
+    at TLSSocket.EventEmitter.emit (domain.js:442:20)
+    at endReadableNT (_stream_readable.js:1090:12)
+    at process._tickCallback (internal/process/next_tick.js:63:19)
+[error] 
+[error] Error: An unexpected error has occurred.
+[debug] [2018-07-17T13:44:07.559Z] ----------------------------------------------------------------------
+[debug] [2018-07-17T13:44:07.561Z] Command:       /usr/local/Cellar/node/10.2.1/bin/node /usr/local/bin/firebase serve
+[debug] [2018-07-17T13:44:07.561Z] CLI Version:   3.19.3
+[debug] [2018-07-17T13:44:07.561Z] Platform:      darwin
+[debug] [2018-07-17T13:44:07.561Z] Node Version:  v10.2.1
+[debug] [2018-07-17T13:44:07.562Z] Time:          Tue Jul 17 2018 22:44:07 GMT+0900 (JST)
+[debug] [2018-07-17T13:44:07.562Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-07-17T13:44:07.575Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-07-17T13:44:07.575Z] > authorizing via signed-in user
+[debug] [2018-07-17T13:44:07.577Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-07-17T13:44:07.577Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/8_HCgGkxTOEfuVgUqIkF_EMFI-u2uu5NBntdzB0oQ20',
+  client_id:
+   '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope:
+   'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Tue Jul 17 2018 22:44:07 GMT+0900 (JST)
+[debug] [2018-07-17T13:44:12.525Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-17T13:44:12.532Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/ec2018og  
+  
+ Tue Jul 17 2018 22:44:12 GMT+0900 (JST)
+[debug] [2018-07-17T13:44:21.615Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-17T13:44:21.616Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/ec2018og/tokens  
+  
+ Tue Jul 17 2018 22:44:21 GMT+0900 (JST)
+[debug] [2018-07-17T13:44:24.095Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-17T13:44:24.096Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/ec2018og  
+  
+ Tue Jul 17 2018 22:44:24 GMT+0900 (JST)
+[debug] [2018-07-17T13:44:25.750Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/kyokonakajima/testfc/friendlychat-web/web-start'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-07-17T13:44:26.555Z] Fetching environment
+[debug] [2018-07-17T13:44:26.558Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/371784527983:getServerAppConfig  
+  
+ Tue Jul 17 2018 22:44:26 GMT+0900 (JST)
+[debug] [2018-07-17T13:44:26.559Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/371784527983/clients/_:getWebAppConfig  
+  
+ Tue Jul 17 2018 22:44:26 GMT+0900 (JST)
+[debug] [2018-07-17T13:44:27.501Z] <<< HTTP RESPONSE 200
+[debug] [2018-07-17T13:44:27.502Z] Starting @google-cloud/functions-emulator
+[debug] [2018-07-17T13:44:27.829Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: ./
+[info] ✔  hosting: Local server: http://localhost:5000
+
+[debug] [2018-07-17T13:44:29.046Z] Parsing function triggers
+[info] i  functions: No HTTPS functions found. Use firebase functions:shell if you would like to emulate other types of functions.
