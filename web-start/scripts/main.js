@@ -35,6 +35,11 @@ Main.MESSAGE_TEMPLATE2 =
     '</div>\n' +
     '</div>';
 
+Main.MESSAGE_TEMPLATE3 =
+    '<div class ="row" style="margin-left: 5px">' +
+    '<div class="oralcard"></div>' +
+    '</div>';
+
 
 function Main(){
     this.userName = document.getElementById('user-name');
@@ -83,7 +88,6 @@ Main.prototype.init = function(){
 
 
 Main.prototype.loadmessages = function() {
-    // Sign in Firebase using popup auth and Google as the identity provider.
 
     this.database = firebase.database();
 
@@ -115,25 +119,39 @@ Main.prototype.loadcards = function() {
 
     this.database = firebase.database();
 
-    var oralcards = document.getElementById('oralcard');
+    var cardcounter = 0;
+    var parentcardcounter = 1;
+
+    var oralcardsParent = document.createElement("div");
+    oralcardsParent.innerHTML = Main.MESSAGE_TEMPLATE3;
+    oralcardsParent = document.getElementById('oralcardContainer');
+    console.log(oralcardsParent);
 
     firebase.database().ref('OralCard/').once('value').then(function(snapshot) {
         snapshot.forEach(function (childSnapshot) {
-            var key = childSnapshot.key;
-            var div = document.getElementById(key);
-            if (!div) {
-                var container = document.createElement('div');
-                console.log(container);
-                container.innerHTML = Main.MESSAGE_TEMPLATE2;
-                div = container.firstChild;
-                div.setAttribute('id', key);
 
-                div.querySelector('.octitle').textContent = childSnapshot.val()["octitle"];
-                div.querySelector('.ocbody').textContent = childSnapshot.val()["ocbody"];
-                div.querySelector('.ocname').textContent = childSnapshot.val()["ocname"];
-                div.querySelector('.ocpic').src = childSnapshot.val()["ocphotoUrl"];
-                oralcards.appendChild(div);
+            if(cardcounter % 3 == 0){
+                parentcardcounter++;
+            }else{
+                var key = childSnapshot.key;
+                var div = document.getElementById(key);
+                if (!div) {
+                    var container = document.createElement('div');
+                    container.innerHTML = Main.MESSAGE_TEMPLATE2;
+                    div = container.firstChild;
+                    div.setAttribute('id', key);
+
+                    div.querySelector('.octitle').textContent = childSnapshot.val()["octitle"];
+                    div.querySelector('.ocbody').textContent = childSnapshot.val()["ocbody"];
+                    div.querySelector('.ocname').textContent = childSnapshot.val()["ocname"];
+                    div.querySelector('.ocpic').src = childSnapshot.val()["ocphotoUrl"];
+                    oralcardsParent.appendChild(div);
+                }
             }
+
+            cardcounter++;
+            console.log(cardcounter);
+
         });
     });
 };
